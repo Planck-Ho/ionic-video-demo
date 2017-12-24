@@ -12,7 +12,10 @@ export class FormatNumPipe implements PipeTransform {
 
   transform(value: number): string {
 
-    if (!value) return;
+    console.log(value);
+    
+
+    if (!value) return `0:00`;
 
     const s = Math.ceil(value % 60) < 10 ? `0${Math.ceil(value % 60)}`: Math.ceil(value % 60) ;
 

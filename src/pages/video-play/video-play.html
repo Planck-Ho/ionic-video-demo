@@ -63,13 +63,13 @@
       class="control-suspend"
       tappable
       [hidden]="!start"
-      (click)="showControl()"
+      (click)="toggleControl()"
     >
       <button
         ion-button
         outline
         only-icon
-        (click)="pause();$event.stopPropagation()"
+        (click)="togglePause();$event.stopPropagation()"
         [hidden]="hideControl"
       >
         <ion-icon [name]="videoElement.paused ?'ios-play':'ios-pause'"></ion-icon>
@@ -84,13 +84,15 @@
           [max]="videoElement.duration"
           mode="md"
           step="1"
-          [(ngModel)]="videoElement.currentTime"
+          [(ngModel)]="currentTime"
+          (ionBlur)="change()"
+          (ionFocus)="focus()"
         >
-          <ion-label range-left>{{(currentTime | async | formatNum)}}</ion-label>
+          <ion-label range-left>{{currentTime | formatNum}}</ion-label>
           <ion-label range-right>{{videoElement.duration | formatNum}}</ion-label>
         </ion-range>
         <button
-          (click)="full($event);$event.stopPropagation()"
+          (click)="full();$event.stopPropagation()"
           [hidden]="isFull"
         >
           <ion-icon name="ios-qr-scanner"></ion-icon>
