@@ -35,7 +35,7 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
   hideControl: boolean = false;
 
- 
+
   isFull: boolean = false;
 
   private currentTime$: Observable<number>;
@@ -61,7 +61,7 @@ export class VideoPlayPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.currentTimeSubscription.unsubscribe();
+    if(this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
   }
 
 
@@ -82,13 +82,9 @@ export class VideoPlayPage implements OnInit, OnDestroy {
     if (this.videoElement.paused) {
       this.play();
 
-      this.timer = setTimeout(() => {
-        this.hideControl = true;
-
-      }, 4000);
 
     } else {
-      clearTimeout(this.timer);
+      
       this.pause();
     }
 
@@ -126,6 +122,8 @@ export class VideoPlayPage implements OnInit, OnDestroy {
     this.content.scrollToTop(0);
     this.content.getScrollElement().style.overflowY = 'hidden';
     this.navbar.setHidden(true);
+    clearTimeout(this.timer);
+    this.hideControl = true;
     this.content.resize();
 
   }
@@ -141,6 +139,8 @@ export class VideoPlayPage implements OnInit, OnDestroy {
     setTimeout(() => {
       this.content.scrollTo(0, this.scrollHeight, 0);
     }, 300);
+    clearTimeout(this.timer);
+    this.hideControl = true;
     this.content.resize();
 
   }
@@ -149,7 +149,7 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
     this.currentTimeSubscription.unsubscribe();
 
-
+    clearTimeout(this.timer);
   }
 
   change(): void {
@@ -168,6 +168,12 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
     this.videoElement.play();
 
+    this.timer = setTimeout(() => {
+      this.hideControl = true;
+
+    }, 4000);
+
+
 
   }
 
@@ -177,7 +183,9 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
     this.videoElement.pause();
 
-    
+    clearTimeout(this.timer);
+
+
   }
 
 

@@ -12,7 +12,6 @@ export class FormatNumPipe implements PipeTransform {
 
   transform(value: number): string {
 
-    console.log(value);
     
 
     if (!value) return `0:00`;
