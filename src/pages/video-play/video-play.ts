@@ -1,13 +1,10 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, Content } from 'ionic-angular';
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/observable/of';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { StatusBar } from '@ionic-native/status-bar';
 
 
 @IonicPage()
@@ -20,13 +17,12 @@ export class VideoPlayPage implements OnInit {
   @ViewChild('player')
   private player: ElementRef;
 
-  @ViewChild('playerBox')
-  private playerBox: ElementRef;
-
+  
   @ViewChild(Navbar)
   private navbar: Navbar;
 
-  @ViewChild(Content) content: Content;
+  @ViewChild(Content)
+  private content: Content;
 
 
 
@@ -54,7 +50,8 @@ export class VideoPlayPage implements OnInit {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private statusBar: StatusBar
   ) {
   }
 
@@ -104,14 +101,13 @@ export class VideoPlayPage implements OnInit {
       this.videoElement.pause();
     }
 
-    console.log(this.videoElement.currentTime);
 
 
   }
 
-  showControl() {
+  showControl(): void {
 
-    
+
 
     if (this.hideControl) {
       this.hideControl = false;
@@ -119,13 +115,13 @@ export class VideoPlayPage implements OnInit {
         this.hideControl = true;
       }, 4000);
 
-    }else{
+    } else {
 
-      
- 
-      if(!this.videoElement.paused){
+
+
+      if (!this.videoElement.paused) {
         clearTimeout(this.timer);
-        this.hideControl=true;
+        this.hideControl = true;
       }
     }
   }
@@ -133,7 +129,7 @@ export class VideoPlayPage implements OnInit {
 
   // 全屏
   async full(e): Promise<void> {
-    
+
 
     this.scrollHeight = this.content.getContentDimensions().scrollTop;
 
@@ -141,15 +137,19 @@ export class VideoPlayPage implements OnInit {
 
     await this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
 
+    this.statusBar.hide();
+
     this.isFull = true;
 
 
-    (this.playerBox.nativeElement as HTMLElement).style.position = 'absolute';
 
     this.content.scrollToTop(0);
 
     this.content.getScrollElement().style.overflowY = 'hidden';
     this.navbar.setHidden(true);
+
+
+    this.content.resize();
   }
 
   // 还原
@@ -158,17 +158,19 @@ export class VideoPlayPage implements OnInit {
 
     await this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
 
+    this.statusBar.show();
 
     this.navbar.setHidden(false);
     this.isFull = false;
-   
-    (this.playerBox.nativeElement as HTMLElement).style.position = 'relative';
+
     this.content.getScrollElement().style.overflowY = 'scroll';
 
     setTimeout(() => {
       this.content.scrollTo(0, this.scrollHeight, 0);
-      this.content.resize();
-    },300);
+      
+    }, 300);
+
+    this.content.resize();
 
   }
 
