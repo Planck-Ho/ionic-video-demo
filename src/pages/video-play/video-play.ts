@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { IonicPage, Navbar, Content } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
+import { IonicPage, Navbar, Content, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
@@ -13,17 +13,12 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'page-video-play',
   templateUrl: 'video-play.html',
 })
-export class VideoPlayPage implements OnInit, OnDestroy {
+export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
 
   @ViewChild('player')
   private player: ElementRef;
 
 
-  @ViewChild(Navbar)
-  private navbar: Navbar;
-
-  @ViewChild(Content)
-  private content: Content;
 
 
 
@@ -38,6 +33,11 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
   isFull: boolean = false;
 
+  private navbar: Navbar;
+
+  private content: Content;
+
+
   private currentTime$: Observable<number>;
 
   private currentTimeSubscription: Subscription;
@@ -51,18 +51,36 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
   constructor(
     private screenOrientation: ScreenOrientation,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private viewCtrl: ViewController
   ) {
   }
 
   ngOnInit() {
-    this.videoElement = this.player.nativeElement;
+
     this.currentTime$ = Observable.interval(1000).map(() => this.videoElement.currentTime);
   }
 
-  ngOnDestroy() {
-    if(this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
+  ngAfterContentInit() {
+    this.videoElement = this.player.nativeElement;
+    this.content = this.viewCtrl.getContent();
+    
+    if(this.viewCtrl.hasNavbar()){
+      this.navbar = this.viewCtrl.getNavbar() as Navbar;
+    }
+    
+
   }
+
+
+
+
+  ngOnDestroy() {
+    if (this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
+    clearTimeout(this.timer);
+  }
+
+
 
 
 
@@ -84,7 +102,7 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
 
     } else {
-      
+
       this.pause();
     }
 
@@ -103,6 +121,8 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
     } else {
 
+      
+
       if (!this.videoElement.paused) {
         clearTimeout(this.timer);
         this.hideControl = true;
@@ -120,8 +140,8 @@ export class VideoPlayPage implements OnInit, OnDestroy {
     this.statusBar.hide();
     this.isFull = true;
     this.content.scrollToTop(0);
-    this.content.getScrollElement().style.overflowY = 'hidden';
-    this.navbar.setHidden(true);
+    this.content.setScrollElementStyle('overflowY', 'hidden');
+    if(!!this.navbar) this.navbar.setHidden(true);
     clearTimeout(this.timer);
     this.hideControl = true;
     this.content.resize();
@@ -133,9 +153,9 @@ export class VideoPlayPage implements OnInit, OnDestroy {
 
     await this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
     this.statusBar.show();
-    this.navbar.setHidden(false);
+    if(!!this.navbar) this.navbar.setHidden(false);
     this.isFull = false;
-    this.content.getScrollElement().style.overflowY = 'scroll';
+    this.content.setScrollElementStyle('overflowY', 'scroll');
     setTimeout(() => {
       this.content.scrollTo(0, this.scrollHeight, 0);
     }, 300);
