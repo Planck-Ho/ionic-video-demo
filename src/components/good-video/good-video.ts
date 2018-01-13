@@ -1,24 +1,30 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
-import { IonicPage, Navbar, Content, ViewController } from 'ionic-angular';
+import { Component, OnDestroy, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
+import { Navbar, Content, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/operator/map';
+import { Subscription } from 'rxjs/Subscription';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { StatusBar } from '@ionic-native/status-bar';
-import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
 
-
-@IonicPage()
 @Component({
-  selector: 'page-video-play',
-  templateUrl: 'video-play.html',
+  selector: 'good-video',
+  templateUrl: 'good-video.html'
 })
-export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
+export class GoodVideoComponent implements AfterViewInit, OnDestroy {
+
 
   @ViewChild('player')
   private player: ElementRef;
 
+  @Input() src: string;
 
+  @Input() poster: string;
+
+
+  @Output() onPause = new EventEmitter<void>();
+
+  @Output() onPlay = new EventEmitter<void>();
 
 
 
@@ -56,19 +62,24 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
   ) {
   }
 
-  ngOnInit() {
 
-    this.currentTime$ = Observable.interval(1000).map(() => this.videoElement.currentTime);
-  }
 
-  ngAfterContentInit() {
+
+  ngAfterViewInit() {
+
+
     this.videoElement = this.player.nativeElement;
+
+
+
     this.content = this.viewCtrl.getContent();
-    
-    if(this.viewCtrl.hasNavbar()){
+
+    if (this.viewCtrl.hasNavbar()) {
       this.navbar = this.viewCtrl.getNavbar() as Navbar;
     }
-    
+
+
+    this.currentTime$ = Observable.interval(1000).map(() => this.videoElement.currentTime);
 
   }
 
@@ -86,7 +97,7 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
 
   startPlay(): void {
 
-    this.play();
+    this._play();
 
     this.start = true;
 
@@ -98,12 +109,12 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
 
 
     if (this.videoElement.paused) {
-      this.play();
+      this._play();
 
 
     } else {
 
-      this.pause();
+      this._pause();
     }
 
   }
@@ -121,7 +132,7 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
 
     } else {
 
-      
+
 
       if (!this.videoElement.paused) {
         clearTimeout(this.timer);
@@ -141,7 +152,7 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
     this.isFull = true;
     this.content.scrollToTop(0);
     this.content.setScrollElementStyle('overflowY', 'hidden');
-    if(!!this.navbar) this.navbar.setHidden(true);
+    if (!!this.navbar) this.navbar.setHidden(true);
     clearTimeout(this.timer);
     this.hideControl = true;
     this.content.resize();
@@ -153,7 +164,7 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
 
     await this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
     this.statusBar.show();
-    if(!!this.navbar) this.navbar.setHidden(false);
+    if (!!this.navbar) this.navbar.setHidden(false);
     this.isFull = false;
     this.content.setScrollElementStyle('overflowY', 'scroll');
     setTimeout(() => {
@@ -174,11 +185,11 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
 
   change(): void {
     this.videoElement.currentTime = this.currentTime;
-    this.play();
+    this._play();
   }
 
 
-  private play(): void {
+  private async _play(): Promise<void> {
 
     if (this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
 
@@ -186,29 +197,30 @@ export class VideoPlayPage implements OnInit, AfterContentInit, OnDestroy {
       this.currentTime = time;
     });
 
-    this.videoElement.play();
+    await this.videoElement.play();
 
     this.timer = setTimeout(() => {
       this.hideControl = true;
 
     }, 4000);
 
+    this.onPlay.emit();
+
 
 
   }
 
-  private pause(): void {
+  private async _pause(): Promise<void> {
 
     this.currentTimeSubscription.unsubscribe();
 
-    this.videoElement.pause();
+    await this.videoElement.pause();
 
     clearTimeout(this.timer);
 
+    this.onPause.emit();
+
 
   }
-
-
-
-
+  
 }

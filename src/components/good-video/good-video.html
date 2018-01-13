@@ -1,0 +1,67 @@
+<div
+  class="video-player"
+  [ngClass]="isFull?'full':'original'"
+>
+  <video
+    crossorigin
+    [poster]="poster"
+    [src]="src"
+    #player
+  >
+  </video>
+  <div
+    [hidden]="start"
+    class="control-layer"
+    tappable
+    (click)="startPlay()"
+  >
+    <ion-icon name="md-arrow-dropright-circle"></ion-icon>
+  </div>
+
+  <div
+    class="control-suspend"
+    tappable
+    [hidden]="!start"
+    (click)="toggleControl()"
+  >
+    <button
+      ion-button
+      outline
+      only-icon
+      (click)="togglePause();$event.stopPropagation()"
+      [hidden]="hideControl"
+    >
+      <ion-icon [name]="videoElement?.paused ?'ios-play':'ios-pause'"></ion-icon>
+    </button>
+
+    <div
+      class="video-toolbar"
+      [hidden]="hideControl"
+    >
+      <ion-range
+        min="0"
+        [max]="videoElement?.duration"
+        mode="md"
+        step="1"
+        [(ngModel)]="currentTime"
+        (ionBlur)="change()"
+        (ionFocus)="focus()"
+      >
+        <ion-label range-left>{{currentTime | formatNum}}</ion-label>
+        <ion-label range-right>{{videoElement?.duration | formatNum}}</ion-label>
+      </ion-range>
+      <button
+        (click)="full();$event.stopPropagation()"
+        [hidden]="isFull"
+      >
+        <ion-icon name="ios-qr-scanner"></ion-icon>
+      </button>
+      <button
+        (click)="restore();$event.stopPropagation()"
+        [hidden]="!isFull"
+      >
+        <ion-icon name="ios-contract"></ion-icon>
+      </button>
+    </div>
+  </div>
+</div>
