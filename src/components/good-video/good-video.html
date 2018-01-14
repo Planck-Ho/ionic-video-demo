@@ -24,15 +24,27 @@
     [hidden]="!start"
     (click)="toggleControl()"
   >
-    <button
-      ion-button
-      outline
-      only-icon
-      (click)="togglePause();$event.stopPropagation()"
-      [hidden]="hideControl"
-    >
-      <ion-icon [name]="videoElement?.paused ?'ios-play':'ios-pause'"></ion-icon>
-    </button>
+    <ion-spinner [hidden]="videoElement?.readyState === 4" name="circles"></ion-spinner>
+    <ng-container *ngIf="!hideControl && videoElement?.readyState === 4">
+      <button
+        ion-button
+        outline
+        only-icon
+        (click)="pause();$event.stopPropagation()"
+        [hidden]="videoElement?.paused"
+      >
+        <ion-icon name="ios-pause"></ion-icon>
+      </button>
+      <button
+        ion-button
+        outline
+        only-icon
+        (click)="play();$event.stopPropagation()"
+        [hidden]="!videoElement?.paused"
+      >
+        <ion-icon name="ios-play"></ion-icon>
+      </button>
+    </ng-container>
 
     <div
       class="video-toolbar"

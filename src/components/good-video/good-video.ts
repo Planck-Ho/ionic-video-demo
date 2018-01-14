@@ -70,8 +70,6 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
     this.videoElement = this.player.nativeElement;
 
-
-
     this.content = this.viewCtrl.getContent();
 
     if (this.viewCtrl.hasNavbar()) {
@@ -89,6 +87,8 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
     clearTimeout(this.timer);
+    this.videoElement = null;
+    this.player = null;
   }
 
 
@@ -97,7 +97,7 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
   startPlay(): void {
 
-    this._play();
+    this.play();
 
     this.start = true;
 
@@ -105,23 +105,15 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
   }
 
 
-  togglePause(): void {
-
-
-    if (this.videoElement.paused) {
-      this._play();
-
-
-    } else {
-
-      this._pause();
-    }
-
-  }
-
 
 
   toggleControl(): void {
+
+    
+
+    if (this.videoElement.paused) return;
+
+    clearTimeout(this.timer);
 
     if (this.hideControl) {
 
@@ -132,12 +124,8 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
     } else {
 
-
-
-      if (!this.videoElement.paused) {
-        clearTimeout(this.timer);
-        this.hideControl = true;
-      }
+     
+      this.hideControl = true;
 
     }
   }
@@ -185,11 +173,11 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
   change(): void {
     this.videoElement.currentTime = this.currentTime;
-    this._play();
+    this.play();
   }
 
 
-  private async _play(): Promise<void> {
+  async play(): Promise<void> {
 
     if (this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
 
@@ -210,17 +198,18 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
   }
 
-  private async _pause(): Promise<void> {
+  async pause(): Promise<void> {
 
     this.currentTimeSubscription.unsubscribe();
+    clearTimeout(this.timer);
 
     await this.videoElement.pause();
 
-    clearTimeout(this.timer);
+
 
     this.onPause.emit();
 
 
   }
-  
+
 }
