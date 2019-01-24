@@ -7,118 +7,25 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- <button ion-button (click)="goVideoPlay()">
-    点击播放
-  </button> -->
 
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum
+    veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
+  </p>
 
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
 
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
+  <div class="video-player" [ngClass]="isFull? 'full' : 'original'">
+    <video crossorigin controls controlslist="nodownload nofullscreen" src="http://static.videogular.com/assets/videos/videogular.mp4" #player>
+    </video>
+    <button class="res-btn" ion-button *ngIf="isFull" (click)="restore()">
+      退出全屏
+    </button>
   </div>
 
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
+  <button ion-button (click)="full()">
+    全屏
+  </button>
 
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
 
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <good-video [src]="'http://static.videogular.com/assets/videos/videogular.mp4'" [poster]="'assets/poster.png'"></good-video>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
-
-  <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, labore ex ratione numquam ad, nesciunt earum veniam aliquam aspernatur enim accusamus, eos inventore minus magnam nemo. Rerum eum quis assumenda?
-  </div>
 
 </ion-content>

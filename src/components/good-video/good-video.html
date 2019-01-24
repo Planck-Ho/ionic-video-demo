@@ -1,77 +1,31 @@
-<div
-  class="video-player"
-  [ngClass]="isFull?'full':'original'"
->
-  <video
-    crossorigin
-    [poster]="poster"
-    [src]="src"
-    #player
-  >
+<div class="video-player" [ngClass]="isFull?'full':'original'">
+  <video crossorigin [poster]="poster" [src]="src" #player>
   </video>
-  <div
-    [hidden]="start"
-    class="control-layer"
-    tappable
-    (click)="startPlay()"
-  >
+  <div [hidden]="start" class="control-layer" tappable (click)="startPlay()">
     <ion-icon name="md-arrow-dropright-circle"></ion-icon>
   </div>
 
-  <div
-    class="control-suspend"
-    tappable
-    [hidden]="!start"
-    (click)="toggleControl()"
-  >
+  <div class="control-suspend" tappable [hidden]="!start" (click)="toggleControl()">
     <ion-spinner [hidden]="videoElement?.readyState === 4" name="circles"></ion-spinner>
     <ng-container *ngIf="!hideControl && videoElement?.readyState === 4">
-      <button
-        ion-button
-        outline
-        only-icon
-        (click)="pause();$event.stopPropagation()"
-        [hidden]="videoElement?.paused"
-      >
+      <button ion-button outline only-icon (click)="pause();$event.stopPropagation()" [hidden]="videoElement?.paused">
         <ion-icon name="ios-pause"></ion-icon>
       </button>
-      <button
-        ion-button
-        outline
-        only-icon
-        (click)="play();$event.stopPropagation()"
-        [hidden]="!videoElement?.paused"
-      >
+      <button ion-button outline only-icon (click)="play();$event.stopPropagation()" [hidden]="!videoElement?.paused">
         <ion-icon name="ios-play"></ion-icon>
       </button>
     </ng-container>
 
-    <div
-      class="video-toolbar"
-      [hidden]="hideControl"
-    >
-      <ion-range
-        min="0"
-        [max]="videoElement?.duration"
-        mode="md"
-        step="1"
-        [(ngModel)]="currentTime"
-        (ionBlur)="change()"
-        (ionFocus)="focus()"
-      >
+    <div class="video-toolbar" [hidden]="hideControl">
+      <ion-range min="0" [max]="videoElement?.duration" mode="md" step="1" [(ngModel)]="currentTime" (ionBlur)="change()"
+        (ionFocus)="focus()">
         <ion-label range-left>{{currentTime | formatNum}}</ion-label>
         <ion-label range-right>{{videoElement?.duration | formatNum}}</ion-label>
       </ion-range>
-      <button
-        (click)="full();$event.stopPropagation()"
-        [hidden]="isFull"
-      >
+      <button (click)="full();$event.stopPropagation()" [hidden]="isFull">
         <ion-icon name="ios-qr-scanner"></ion-icon>
       </button>
-      <button
-        (click)="restore();$event.stopPropagation()"
-        [hidden]="!isFull"
-      >
+      <button (click)="restore();$event.stopPropagation()" [hidden]="!isFull">
         <ion-icon name="ios-contract"></ion-icon>
       </button>
     </div>

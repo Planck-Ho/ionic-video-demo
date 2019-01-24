@@ -1,4 +1,13 @@
-import { Component, OnDestroy, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  Input
+} from '@angular/core';
 import { Navbar, Content, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,8 +21,6 @@ import 'rxjs/add/operator/map';
   templateUrl: 'good-video.html'
 })
 export class GoodVideoComponent implements AfterViewInit, OnDestroy {
-
-
   @ViewChild('player')
   private player: ElementRef;
 
@@ -21,12 +28,9 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
   @Input() poster: string;
 
-
   @Output() onPause = new EventEmitter<void>();
 
   @Output() onPlay = new EventEmitter<void>();
-
-
 
   start: boolean = false;
 
@@ -36,38 +40,27 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
   hideControl: boolean = false;
 
-
   isFull: boolean = false;
 
   private navbar: Navbar;
 
   private content: Content;
 
-
   private currentTime$: Observable<number>;
 
   private currentTimeSubscription: Subscription;
 
-
   private timer: number = null;
 
-
   private scrollHeight: number;
-
 
   constructor(
     private screenOrientation: ScreenOrientation,
     private statusBar: StatusBar,
     private viewCtrl: ViewController
-  ) {
-  }
-
-
-
+  ) {}
 
   ngAfterViewInit() {
-
-
     this.videoElement = this.player.nativeElement;
 
     this.content = this.viewCtrl.getContent();
@@ -76,27 +69,21 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
       this.navbar = this.viewCtrl.getNavbar() as Navbar;
     }
 
-
-    this.currentTime$ = Observable.interval(1000).map(() => this.videoElement.currentTime);
-
+    this.currentTime$ = Observable.interval(1000).map(
+      () => this.videoElement.currentTime
+    );
   }
 
-
-
-
   ngOnDestroy() {
-    if (this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
+    if (this.currentTimeSubscription) {
+      this.currentTimeSubscription.unsubscribe();
+    }
     clearTimeout(this.timer);
     this.videoElement = null;
     this.player = null;
   }
 
-
-
-
-
   startPlay(): void {
-
     this.play();
 
     this.start = true;
@@ -104,38 +91,27 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
     this.hideControl = true;
   }
 
-
-
-
   toggleControl(): void {
-
-    
-
     if (this.videoElement.paused) return;
 
     clearTimeout(this.timer);
 
     if (this.hideControl) {
-
       this.hideControl = false;
       this.timer = setTimeout(() => {
         this.hideControl = true;
       }, 4000);
-
     } else {
-
-     
       this.hideControl = true;
-
     }
   }
 
-
   // 全屏
   async full(): Promise<void> {
-
     this.scrollHeight = this.content.getContentDimensions().scrollTop;
-    await this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
+    await this.screenOrientation.lock(
+      this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY
+    );
     this.statusBar.hide();
     this.isFull = true;
     this.content.scrollToTop(0);
@@ -144,13 +120,13 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
     clearTimeout(this.timer);
     this.hideControl = true;
     this.content.resize();
-
   }
 
   // 还原
   async restore(): Promise<void> {
-
-    await this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
+    await this.screenOrientation.lock(
+      this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY
+    );
     this.statusBar.show();
     if (!!this.navbar) this.navbar.setHidden(false);
     this.isFull = false;
@@ -161,11 +137,9 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
     clearTimeout(this.timer);
     this.hideControl = true;
     this.content.resize();
-
   }
 
   focus(): void {
-
     this.currentTimeSubscription.unsubscribe();
 
     clearTimeout(this.timer);
@@ -176,10 +150,9 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
     this.play();
   }
 
-
   async play(): Promise<void> {
-
-    if (this.currentTimeSubscription) this.currentTimeSubscription.unsubscribe();
+    if (this.currentTimeSubscription)
+      this.currentTimeSubscription.unsubscribe();
 
     this.currentTimeSubscription = this.currentTime$.subscribe(time => {
       this.currentTime = time;
@@ -189,27 +162,17 @@ export class GoodVideoComponent implements AfterViewInit, OnDestroy {
 
     this.timer = setTimeout(() => {
       this.hideControl = true;
-
     }, 4000);
 
     this.onPlay.emit();
-
-
-
   }
 
   async pause(): Promise<void> {
-
     this.currentTimeSubscription.unsubscribe();
     clearTimeout(this.timer);
 
     await this.videoElement.pause();
 
-
-
     this.onPause.emit();
-
-
   }
-
 }
