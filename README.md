@@ -2,15 +2,16 @@
 
 > ionic 中用 html5 的 video 标签播放视频，但是全屏的时候会黑屏。现在通过旋转手机屏幕和样式调整的方式，来模拟全屏视频播放。
 
+#### 扫码下载App
+<img width="400" src="https://github.com/hamal-ho/ionic-video-demo/blob/master/src/assets/imgs/1548384296.png">
+
+
 ## 效果演示
 
 <p align="center">
    <img width="400" src="https://github.com/hamal-ho/ionic-video-demo/blob/master/src/assets/imgs/demo.gif">
 </p>
 
-## Download
-
-> [安卓版 demo](https://raw.githubusercontent.com/hamal-ho/ionic-video-demo/master/src/assets/demo/ionic-video-demo.apk)
 
 ## 依赖
 
