@@ -8,6 +8,10 @@
    <img width="400" src="https://github.com/hamal-ho/ionic-video-demo/blob/master/src/assets/imgs/demo.gif">
 </p>
 
+## Download
+
+> [安卓版 demo](https://github.com/hamal-ho/ionic-video-demo/blob/master/src/assets/demo/ionic-video-demo.apk)
+
 ## 依赖
 
 安装 [Screen Orientation](https://ionicframework.com/docs/native/screen-orientation) 插件
