@@ -10,7 +10,7 @@
 
 ## Download
 
-> [安卓版 demo](https://github.com/hamal-ho/ionic-video-demo/blob/master/src/assets/demo/ionic-video-demo.apk)
+> [安卓版 demo](https://raw.githubusercontent.com/hamal-ho/ionic-video-demo/master/src/assets/demo/ionic-video-demo.apk)
 
 ## 依赖
 
